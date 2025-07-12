@@ -1,5 +1,4 @@
 return {
-  { "folke/which-key.nvim", lazy = true },
   -- cmp
   {
     "hrsh7th/nvim-cmp",
