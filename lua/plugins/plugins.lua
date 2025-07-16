@@ -63,7 +63,7 @@ return {
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", 
+        ensure_installed = { "lua_ls",
         "pylsp",
         "postgres_lsp",
         "nginx_language_server",
@@ -74,5 +74,17 @@ return {
         },
       }
     end,
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+      "folke/snacks.nvim",
+    },
+    lazy = false,
+    ---@module "neo-tree"
   }
 }
