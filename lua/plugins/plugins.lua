@@ -2,6 +2,7 @@ return {
   -- cmp
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -30,47 +31,34 @@ return {
     end,
   },
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-    },
-    config = function()
-      local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      -- Set up servers manually or wait for Mason hook
-      local servers = { "lua_ls", }
-
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({
-          capabilities = capabilities,
-          settings = server == "lua_ls" and {
-            Lua = {
-              diagnostics = {
-                globals = { "vim" },
-              },
-            },
-          } or nil,
-        })
-      end
-    end,
+  "neovim/nvim-lspconfig",
+  event = { "BufReadPre", "BufNewFile" },
+  dependencies = {
+      "mason.nvim",
+      "mason-lspconfig.nvim",
+    }
   },
   {
     "williamboman/mason.nvim",
+    cmd = "Mason",
+    build = ":MasonUpdate",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
     },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls",
+        ensure_installed = {
+        "lua_ls",
         "pylsp",
+        "jdtls",
         "postgres_lsp",
         "nginx_language_server",
         "html",
         "docker_compose_language_service",
         "clangd",
         "ts_ls",
+        "texlab",
         },
       }
     end,
@@ -82,9 +70,11 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
-      "folke/snacks.nvim",
     },
-    lazy = false,
+    cmd = "Neotree",
+    keys = {
+      { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle NeoTree" },
+    },
     ---@module "neo-tree"
   }
 }
